@@ -9,13 +9,23 @@ our $VERSION = '0.01';
 require XSLoader;
 XSLoader::load('Ganglia::Gmetric::XS', $VERSION);
 
+sub new {
+    my $class = shift;
+    my %args  = @_;
+
+    my $config = delete $args{config} || "/etc/gmond.conf";
+    warn "config: $config"; # fixme
+
+    return initialize_ganglia($class, $config);
+}
+
 1;
 
 __END__
 
 =head1 NAME
 
-Ganglia::Gmetric::XS - [One line description of module's purpose here] FIXME
+Ganglia::Gmetric::XS - send a metric value to gmond with libganglia C library
 
 =head1 SYNOPSIS
 

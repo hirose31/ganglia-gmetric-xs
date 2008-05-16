@@ -19,32 +19,16 @@ typedef struct ganglia_t {
 MODULE = Ganglia::Gmetric::XS    PACKAGE = Ganglia::Gmetric::XS
 
 SV *
-new(class, ...)
-    SV *class;
+initialize_ganglia(class, config)
+    SV   *class;
+    char *config;
   PREINIT:
     ganglia *gang;
     SV *sv;
-    char *config = "/etc/gmond.conf";
   CODE:
     if (SvROK(class))
       croak("Cannot call new() on a reference");
     Newxz(gang, 1, ganglia);
-
-    if (items > 1) {
-      HV   *hv;
-      HE   *he;
-      SV   *key;
-      if (!SvROK(ST(1)))
-        croak("ref(hashref) expected");
-      hv = (HV*)SvRV(ST(1));
-      if (SvTYPE(hv) != SVt_PVHV)
-        croak("hashref expected");
-
-      key = newSVpv("config",0);
-      he  = hv_fetch_ent(hv, key, 0, 0);
-      if (he)
-        config = SvPV_nolen(HeVAL(he));
-    }
 #ifdef DIAG
     PerlIO_printf(PerlIO_stderr(), "config:%s\n", config);
 #endif
