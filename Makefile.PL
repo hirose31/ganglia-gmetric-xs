@@ -10,14 +10,14 @@ requires 'UNIVERSAL::require'    => 0;
 build_requires 'Test::More'      => 0;
 build_requires 'Test::Base'      => 0;
 
-
 GetOptions(
     "ganglia-dir=s" => \my $ganglia_dir,
     "diag"          => \my $diagnostic,
     "debug"         => \my $debug,
    );
+$ganglia_dir ||= $ENV{GANGLIA_DIR} if $ENV{GANGLIA_DIR};
 
-die "missing option: --ganglia_dir=/path/to/ganglia-3.x.x" unless $ganglia_dir;
+die "missing option: --ganglia-dir=/path/to/ganglia-3.x.x" unless $ganglia_dir;
 my @static_libs = qw(
                         lib/.libs/libganglia.a
                         srclib/apr/.libs/libapr-0.a

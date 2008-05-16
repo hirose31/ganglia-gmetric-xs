@@ -68,9 +68,9 @@ returns it. %option is following:
 
 =head2 send
 
-  $gg->send( %param ) or carp "failed to send metrix";
+  $gg->send( %param ) or carp "failed to send metric";
 
-do send a metrix vlaue. %param is following:
+do send a metric value. %param is following:
 
   KEY    VALUE
   ----------------------------
