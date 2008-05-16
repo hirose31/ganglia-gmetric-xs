@@ -14,9 +14,19 @@ sub new {
     my %args  = @_;
 
     my $config = delete $args{config} || "/etc/gmond.conf";
-    warn "config: $config"; # fixme
+    return ganglia_initialize($class, $config);
+}
 
-    return initialize_ganglia($class, $config);
+sub send {
+    my($self,%args) = @_;
+
+    return ganglia_send(
+        $self,
+        $args{name}  || "",
+        $args{value} || "",
+        $args{type}  || "",
+        $args{units} || "",
+        3, 60, 0);
 }
 
 1;
@@ -31,35 +41,47 @@ Ganglia::Gmetric::XS - send a metric value to gmond with libganglia C library
 
     use Ganglia::Gmetric::XS;
 
-    my $gm = Ganglia::Gmetric::XS->new(config => "/etc/gmond.conf");
-    $gm->send( name => "db_conn", value => 32, type => "uint32", unit => "connection" );
+    my $gg = Ganglia::Gmetric::XS->new(config => "/etc/gmond.conf");
+    $gg->send(name  => "db_conn",
+              value => 32,
+              type  => "uint32",
+              unit  => "connection",
+             );
 
 =head1 DESCRIPTION
 
-FIXME
-
-=head1 FUNCTIONS
-
-or FIXME
+Ganglia::Gmetric::XS can send a metric value to gmond with libganglia
+C library.
 
 =head1 METHODS
 
 =head2 new
 
-  $obj = Ganglia::Gmetric::XS->new( %option )
+  $gg = Ganglia::Gmetric::XS->new( %option );
 
-FIXME ...
+This method constructs a new "Ganglia::Gmetric::XS" instance and
+returns it. %option is following:
 
-=head2 some_method
+  KEY    VALUE
+  ----------------------------
+  config "/etc/gmond.conf"
 
-  $ret = $obj->some_method
+=head2 send
 
-FIXME ...
+  $gg->send( %param ) or carp "failed to send metrix";
+
+do send a metrix vlaue. %param is following:
+
+  KEY    VALUE
+  ----------------------------
+  name   name of the metric
+  value  value of the metric
+  type   either string|int8|uint8|int16|uint16|int32|uint32|float|double
+  units  unit of measure for the value e.g. "Kilobytes", "Celcius"
 
 =head1 SEE ALSO
 
-L<Some::Module::FIXME>
-L<http://www.perl.org/FIXME>
+L<http://ganglia.info>
 
 =head1 AUTHOR
 

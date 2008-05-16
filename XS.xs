@@ -19,7 +19,7 @@ typedef struct ganglia_t {
 MODULE = Ganglia::Gmetric::XS    PACKAGE = Ganglia::Gmetric::XS
 
 SV *
-initialize_ganglia(class, config)
+ganglia_initialize(class, config)
     SV   *class;
     char *config;
   PREINIT:
@@ -58,43 +58,24 @@ initialize_ganglia(class, config)
     RETVAL
 
 int
-send(self, SV *args)
-    SV *self;
+ganglia_send(self, name, value, type, units, slope, tmax, dmax)
+    SV   *self;
+    char *name;
+    char *value;
+    char *type;
+    char *units;
+    unsigned int slope;
+    unsigned int tmax;
+    unsigned int dmax;
   PREINIT:
     ganglia *gang;
-    char *name  = "";
-    char *value = "";
-    char *type  = "";
-    char *units = "";
   CODE:
-    HV   *hv;
-    HE   *he;
-    SV   *tmp;
-    char *key;
-    I32   keylen = 0;
     int   r;
     gang = XS_STATE(ganglia *, self);
-
-    if (!SvROK(args))
-      croak("ref(hashref) expected");
-    hv = (HV*)SvRV(args);
-    if (SvTYPE(hv) != SVt_PVHV)
-      croak("hashref expected");
-
-    hv_iterinit(hv);
-    while ( (tmp = hv_iternextsv(hv, &key, &keylen)) != NULL ) {
-      if (strEQ(key, "name")) {
-        name  = SvPV_nolen(tmp);
-      } else if (strEQ(key, "value")) {
-        value = SvPV_nolen(tmp);
-      } else if (strEQ(key, "type")) {
-        type  = SvPV_nolen(tmp);
-      } else if (strEQ(key, "units")) {
-        units = SvPV_nolen(tmp);
-      }
-    }
-
-    r = Ganglia_gmetric_set(gang->gmetric, name, value, type, units, 3, 60, 0);
+#ifdef DIAG
+    PerlIO_printf(PerlIO_stderr(), "send:%s=%s\n", name,value);
+#endif
+    r = Ganglia_gmetric_set(gang->gmetric, name, value, type, units, slope, tmax, dmax);
     switch(r) {
     case 1:
       croak("gmetric parameters invalid. exiting.\n");
