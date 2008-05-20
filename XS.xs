@@ -95,6 +95,7 @@ DESTROY(self)
   CODE:
 #ifdef DIAG
     PerlIO_printf(PerlIO_stderr(), "DESTROY: called\n" );
+    PerlIO_printf(PerlIO_stderr(), "REFCNT:self=%d\n", SvREFCNT(self));
 #endif
     gang = XS_STATE(ganglia *, self);
     if (gang == NULL) {
