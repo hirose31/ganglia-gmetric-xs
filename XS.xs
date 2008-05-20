@@ -49,11 +49,7 @@ ganglia_initialize(class, config)
     if (! gang->gmetric)
       croak("failed to Ganglia_gmetric_create");
 
-    sv = newSViv(PTR2IV(gang));
-    sv = newRV_noinc(sv);
-    sv_bless(sv, gv_stashpv(SvPV_nolen(class), 1));
-    SvREADONLY_on(sv);
-    RETVAL = sv;
+    RETVAL = sv_setref_iv(newSV(0), SvPV_nolen(class), PTR2IV(gang));
   OUTPUT:
     RETVAL
 
