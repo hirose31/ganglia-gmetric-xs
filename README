@@ -15,15 +15,19 @@ INSTALLATION
 
 To install this module, run the following commands:
 
-    perl Build.PL
-    ./Build
-    ./Build test
-    ./Build install
+To build XS module, We need some libraries and header files which bundled
+ganglia tarball. so firstly we configure and make ganglia source.
 
+    cd WORKDIR
+    wget http://dl.sourceforge.net/sourceforge/ganglia/ganglia-3.0.X.tar.gz
+    tar zxf ganglia-3.0.X.tar.gz
+    cd ganglia-3.0.X
+    ./configure && make
 
-Alternatively, to install with Module::Install, you can use the following commands:
+then, specify gaglia build directory by --ganglia-dir option or environment
+variable $GANGLIA_DIR.
 
-    perl Makefile.PL
+    perl Makefile.PL --ganglia-dir=WORKDIR/ganglia-3.0.X
     make
     make test
     make install
