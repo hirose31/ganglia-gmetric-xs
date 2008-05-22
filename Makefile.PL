@@ -34,7 +34,7 @@ for my $lib (@static_libs) {
 
 can_cc or die "This module requires a C compiler";
 cc_optimize_flags "-O2";
-cc_inc_paths "$ganglia_dir/lib";
+cc_inc_paths "$ganglia_dir/lib", "$ganglia_dir/srclib/apr/include";
 #cc_lib_paths "";
 libs "-lrt";
 makemaker_args "MYEXTLIB" => join(" ", @myextlibs);
