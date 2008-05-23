@@ -1,4 +1,3 @@
-# perl Malefile.PL --ganglia_dir=/path/to/ganglia-3.0.x
 use inc::Module::Install;
 use Getopt::Long;
 
@@ -11,9 +10,10 @@ build_requires 'Test::More'      => 0;
 build_requires 'Test::Base'      => 0;
 
 GetOptions(
-    "ganglia-dir=s" => \my $ganglia_dir,
-    "diag"          => \my $diagnostic,
-    "debug"         => \my $debug,
+    "ganglia-dir=s"      => \my $ganglia_dir,
+    "enable-clear-pool"  => \my $enable_clear_pool,
+    "diag"               => \my $diagnostic,
+    "debug"              => \my $debug,
    );
 $ganglia_dir ||= $ENV{GANGLIA_DIR} if $ENV{GANGLIA_DIR};
 
@@ -37,14 +37,19 @@ cc_optimize_flags "-O2";
 cc_inc_paths "$ganglia_dir/lib", "$ganglia_dir/srclib/apr/include";
 #cc_lib_paths "";
 libs "-lrt";
+my @defines;
 makemaker_args "MYEXTLIB" => join(" ", @myextlibs);
 if ($diagnostic) {
     cc_optimize_flags "-g";
-    makemaker_args "DEFINE" => "-DDIAG";
+    push @defines, "-DDIAG";
 }
 if ($debug) {
     cc_optimize_flags "-g";
 }
+if ($enable_clear_pool) {
+    push @defines, "-DCLEAR_POOL";
+}
+makemaker_args "DEFINE" => join(" ", @defines);
 
 use_test_base;
 auto_install;

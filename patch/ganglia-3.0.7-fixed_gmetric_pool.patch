@@ -1,0 +1,23 @@
+--- ganglia-3.0.7/lib/libgmond.c.orig	2008-02-28 08:15:19.000000000 +0900
++++ ganglia-3.0.7/lib/libgmond.c	2008-05-23 00:54:26.000000000 +0900
+@@ -662,18 +662,16 @@
+     {
+       return NULL;
+     }
+-  gmetric = apr_pcalloc( pool, sizeof(struct Ganglia_gmetric));
++  gmetric = apr_pcalloc( parent_pool, sizeof(struct Ganglia_gmetric));
+   if(!gmetric)
+     {
+-      Ganglia_pool_destroy(pool);
+       return NULL;
+     }
+ 
+   gmetric->pool = pool;
+-  gmetric->msg  = apr_pcalloc( pool, sizeof(struct Ganglia_gmetric_message));
++  gmetric->msg  = apr_pcalloc( parent_pool, sizeof(struct Ganglia_gmetric_message));
+   if(!gmetric->msg)
+     {
+-      Ganglia_pool_destroy(pool);
+       return NULL;
+     }
+ 

@@ -84,7 +84,21 @@ ganglia_send(self, name, value, type, units, slope, tmax, dmax)
     }
 
     RETVAL = ! Ganglia_gmetric_send(gang->gmetric, gang->channel);
+#ifdef CLEAR_POOL
     apr_pool_clear(gang->gmetric->pool);
+#endif
+  OUTPUT:
+    RETVAL
+
+unsigned int
+enabled_clear_pool(class)
+    SV *class;
+  CODE:
+#ifdef CLEAR_POOL
+    RETVAL = 1;
+#else
+    RETVAL = 0;
+#endif
   OUTPUT:
     RETVAL
 
