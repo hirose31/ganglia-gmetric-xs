@@ -19,7 +19,7 @@ typedef struct ganglia_t {
 MODULE = Ganglia::Gmetric::XS    PACKAGE = Ganglia::Gmetric::XS
 
 SV *
-ganglia_initialize(class, config)
+_ganglia_initialize(class, config)
     SV   *class;
     char *config;
   PREINIT:
@@ -54,7 +54,7 @@ ganglia_initialize(class, config)
     RETVAL
 
 int
-ganglia_send(self, name, value, type, units, slope, tmax, dmax)
+_ganglia_send(self, name, value, type, units, slope, tmax, dmax)
     SV   *self;
     char *name;
     char *value;

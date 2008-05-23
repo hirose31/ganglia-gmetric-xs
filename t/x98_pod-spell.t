@@ -15,3 +15,4 @@ examinee
 hostname
 gmond
 libganglia
+README

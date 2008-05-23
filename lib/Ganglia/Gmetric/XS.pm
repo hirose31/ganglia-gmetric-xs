@@ -14,13 +14,13 @@ sub new {
     my %args  = @_;
 
     my $config = delete $args{config} || "/etc/gmond.conf";
-    return ganglia_initialize($class, $config);
+    return _ganglia_initialize($class, $config);
 }
 
 sub send {
     my($self,%args) = @_;
 
-    return ganglia_send(
+    return _ganglia_send(
         $self,
         $args{name}  || "",
         $args{value} || "",
@@ -78,6 +78,13 @@ do send a metric value. %param is following:
   value  value of the metric
   type   either string|int8|uint8|int16|uint16|int32|uint32|float|double
   units  unit of measure for the value e.g. "Kilobytes", "Celcius"
+
+=head2 enabled_clear_pool
+
+  print $gg->enabled_clear_pool ? "true" : "false";
+
+return true if you specify --enable-clear-pool option at "perl Makefile.PL".
+see also README file.
 
 =head1 SEE ALSO
 
