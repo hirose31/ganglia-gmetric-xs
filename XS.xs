@@ -110,6 +110,7 @@ DESTROY(self)
       Ganglia_gmetric_destroy(gang->gmetric);
     if (gang->context != NULL)
       Ganglia_pool_destroy(gang->context);
+    cfg_free(gang->gconfig);
     Safefree(gang);
 #ifdef DIAG
     PerlIO_printf(PerlIO_stderr(), "DESTROY: done\n" );
