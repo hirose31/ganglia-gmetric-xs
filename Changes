@@ -1,4 +1,9 @@
 Revision history for Ganglia-Gmetric-XS
 
+0.02  2008-05-26
+  * fixed some memory leak bugs.
+    see README and apply including patch to ganglia.
+
 0.01  2008-05-16
   * Initial release.
+

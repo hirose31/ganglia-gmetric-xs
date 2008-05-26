@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 require XSLoader;
 XSLoader::load('Ganglia::Gmetric::XS', $VERSION);
@@ -93,6 +93,10 @@ L<http://ganglia.info>
 =head1 AUTHOR
 
 HIROSE Masaaki, C<< <hirose@klab.org> >>
+
+=head1 REPOSITORY
+
+L<http://github.com/hirose31/ganglia-gmetric-xs/tree/master>
 
 =head1 BUGS
 
