@@ -4,6 +4,7 @@ use warnings;
 use Carp;
 use Getopt::Long;
 use LWP::UserAgent;
+use Ganglia::Gmetric::XS;
 use Data::Dumper;
 $Data::Dumper::Indent   = 1;
 $Data::Dumper::Deepcopy = 1;
@@ -32,7 +33,7 @@ sub usage() {
 
     print "[ERROR] $mesg\n" if $mesg;
     print "usage:\n";
-    print "    $PROG [ -d level ] [-X] url\n";
+    print "    $PROG [ -d ] [-X] url\n";
     print "
 
 v$REVISION
@@ -61,6 +62,8 @@ MAIN: {
                                 );
     my $req = HTTP::Request->new(GET => $url);
     # $req->header(Host => 'example.org'); # set vhost name if you need
+
+    my $gmetric = Ganglia::Gmetric::XS->new;
 
     for (;;) {
         ### get status data
@@ -133,16 +136,20 @@ MAIN: {
 
         ### gmetric
         if ($rps >= 0) {
-            &gmetric('ap_rps', $rps,
-                     '--type'  => 'uint16',
-                     '--units' => 'r/s',
-                    );
+            $gmetric->send(
+                name  => "ap_rps",
+                value => $rps,
+                type  => 'uint16',
+                units => 'r/s',
+               );
         }
         while (my ($k, $v) = each %scoreboard) {
-            &gmetric("ap_${k}", $v,
-                     '--type'  => 'uint16',
-                     '--units' => 'proc',
-                    );
+            $gmetric->send(
+                name  => "ap_${k}",
+                value => $v,
+                type  => 'uint16',
+                units => 'proc',
+               );
         }
 
         last if $No_Daemon;
@@ -151,14 +158,6 @@ MAIN: {
     }
 
     exit 0;
-}
-
-sub gmetric {
-    my $name  = shift;
-    my $value = shift;
-    my %opts = @_;
-    $opts{'--name'} = $name unless $opts{'--name'};
-    system('gmetric', '--value', $value, %opts);
 }
 
 __END__
