@@ -28,8 +28,7 @@ _ganglia_initialize(class, config)
   CODE:
     if (SvROK(class))
       croak("Cannot call new() on a reference");
-    /*Newxz(gang, 1, ganglia);*/
-    Newz(117, gang, 1, ganglia);
+    Newxz(gang, 1, ganglia);
 #ifdef DIAG
     PerlIO_printf(PerlIO_stderr(), "config:%s\n", config);
 #endif
