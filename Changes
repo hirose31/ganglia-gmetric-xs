@@ -1,5 +1,10 @@
 Revision history for Ganglia-Gmetric-XS
 
+1.00  2008-06-17
+  * first stable release.
+  * correct mis-usage of gmetric (Ganglia_gmetric). to destory every time.
+    thanks a lot for advice by ganglia team.
+
 0.02  2008-05-26
   * fixed some memory leak bugs.
     see README and apply including patch to ganglia.

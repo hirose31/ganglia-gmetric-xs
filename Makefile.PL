@@ -4,14 +4,10 @@ use Getopt::Long;
 name        'Ganglia-Gmetric-XS';
 all_from    'lib/Ganglia/Gmetric/XS.pm';
 
-requires 'UNIVERSAL::require'    => 0;
-
 build_requires 'Test::More'      => 0;
-build_requires 'Test::Base'      => 0;
 
 GetOptions(
     "ganglia-dir=s"      => \my $ganglia_dir,
-    "enable-clear-pool"  => \my $enable_clear_pool,
     "diag"               => \my $diagnostic,
     "debug"              => \my $debug,
    );
@@ -45,9 +41,6 @@ if ($diagnostic) {
 }
 if ($debug) {
     cc_optimize_flags "-g";
-}
-if ($enable_clear_pool) {
-    push @defines, "-DCLEAR_POOL";
 }
 makemaker_args "DEFINE" => join(" ", @defines);
 

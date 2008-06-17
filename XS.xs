@@ -45,10 +45,6 @@ _ganglia_initialize(class, config)
     if (! gang->channel)
       croak("failed to Ganglia_udp_send_channels_create");
 
-    gang->gmetric = Ganglia_gmetric_create(gang->context);
-    if (! gang->gmetric)
-      croak("failed to Ganglia_gmetric_create");
-
     RETVAL = sv_setref_iv(newSV(0), SvPV_nolen(class), PTR2IV(gang));
   OUTPUT:
     RETVAL
@@ -68,6 +64,10 @@ _ganglia_send(self, name, value, type, units, slope, tmax, dmax)
   CODE:
     int   r;
     gang = XS_STATE(ganglia *, self);
+
+    gang->gmetric = Ganglia_gmetric_create(gang->context);
+    if (! gang->gmetric)
+      croak("failed to Ganglia_gmetric_create");
 #ifdef DIAG
     PerlIO_printf(PerlIO_stderr(), "send:%s=%s\n", name,value);
 #endif
@@ -84,21 +84,7 @@ _ganglia_send(self, name, value, type, units, slope, tmax, dmax)
     }
 
     RETVAL = ! Ganglia_gmetric_send(gang->gmetric, gang->channel);
-#ifdef CLEAR_POOL
-    apr_pool_clear(gang->gmetric->pool);
-#endif
-  OUTPUT:
-    RETVAL
-
-unsigned int
-enabled_clear_pool(class)
-    SV *class;
-  CODE:
-#ifdef CLEAR_POOL
-    RETVAL = 1;
-#else
-    RETVAL = 0;
-#endif
+    Ganglia_gmetric_destroy(gang->gmetric);
   OUTPUT:
     RETVAL
 
@@ -120,8 +106,6 @@ DESTROY(self)
       return;
     }
 
-    if (gang->gmetric != NULL)
-      Ganglia_gmetric_destroy(gang->gmetric);
     if (gang->context != NULL)
       Ganglia_pool_destroy(gang->context);
     cfg_free(gang->gconfig);

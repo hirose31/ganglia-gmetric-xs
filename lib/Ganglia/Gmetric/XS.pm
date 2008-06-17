@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.02';
+our $VERSION = '1.00';
 
 require XSLoader;
 XSLoader::load('Ganglia::Gmetric::XS', $VERSION);
@@ -78,13 +78,6 @@ do send a metric value. %param is following:
   value  value of the metric
   type   either string|int8|uint8|int16|uint16|int32|uint32|float|double
   units  unit of measure for the value e.g. "Kilobytes", "Celcius"
-
-=head2 enabled_clear_pool
-
-  print $gg->enabled_clear_pool ? "true" : "false";
-
-return true if you specify --enable-clear-pool option at "perl Makefile.PL".
-see also README file.
 
 =head1 SEE ALSO
 

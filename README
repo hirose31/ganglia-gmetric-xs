@@ -18,21 +18,15 @@ To install this module, run the following commands:
 To build XS module, We need some libraries and header files which bundled
 ganglia tarball. so firstly we configure and make ganglia source.
 
-Before build ganglia, I strongly recommend applying patch for fix
-libganglia's memory leak.
-
     cd WORKDIR
     wget http://dl.sourceforge.net/sourceforge/ganglia/ganglia-3.0.X.tar.gz
     tar zxf ganglia-3.0.X.tar.gz
     cd ganglia-3.0.X
-    patch -p1 THIS_MODULE_DIR/patch/ganglia-3.0.7-fixed_gmetric_pool.patch
     ./configure && make
 
 next, run perl Makefile.PL specifying gaglia build directory by --ganglia-dir
 option or environment variable $GANGLIA_DIR.
 
-    perl Makefile.PL --ganglia-dir=WORKDIR/ganglia-3.0.X --enable-clear-pool
-      OR if you do not apply patch
     perl Makefile.PL --ganglia-dir=WORKDIR/ganglia-3.0.X
     make
     make test
