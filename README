@@ -22,7 +22,7 @@ ganglia tarball. so firstly we configure and make ganglia source.
     wget http://dl.sourceforge.net/sourceforge/ganglia/ganglia-3.0.X.tar.gz
     tar zxf ganglia-3.0.X.tar.gz
     cd ganglia-3.0.X
-    ./configure && make
+    ./configure CFLAGS="-fPIC" && make
 
 next, run perl Makefile.PL specifying gaglia build directory by --ganglia-dir
 option or environment variable $GANGLIA_DIR.
