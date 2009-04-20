@@ -45,7 +45,7 @@ Ganglia::Gmetric::XS - send a metric value to gmond with libganglia C library
     $gg->send(name  => "db_conn",
               value => 32,
               type  => "uint32",
-              unit  => "connection",
+              units => "connection",
              );
 
 =head1 DESCRIPTION
