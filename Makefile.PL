@@ -13,7 +13,7 @@ GetOptions(
    );
 $ganglia_dir ||= $ENV{GANGLIA_DIR} if $ENV{GANGLIA_DIR};
 
-die "missing option: --ganglia-dir=/path/to/ganglia-3.x.x" unless $ganglia_dir;
+die "missing option: --ganglia-dir=/path/to/ganglia-3.0.x" unless $ganglia_dir;
 my @static_libs = qw(
                         lib/.libs/libganglia.a
                         srclib/apr/.libs/libapr-0.a
