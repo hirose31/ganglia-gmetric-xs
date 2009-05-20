@@ -85,7 +85,7 @@ L<http://ganglia.info>
 
 =head1 AUTHOR
 
-HIROSE Masaaki, C<< <hirose@klab.org> >>
+HIROSE Masaaki, C<< <hirose31@gmail.com> >>
 
 =head1 REPOSITORY
 
