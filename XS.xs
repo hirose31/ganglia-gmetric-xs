@@ -7,6 +7,14 @@
 
 #include "ganglia.h"
 
+#ifdef GANGLIA30
+#  define Ganglia_metric          Ganglia_gmetric
+#  define Ganglia_metric_create   Ganglia_gmetric_create
+#  define Ganglia_metric_set      Ganglia_gmetric_set
+#  define Ganglia_metric_send     Ganglia_gmetric_send
+#  define Ganglia_metric_destroy  Ganglia_gmetric_destroy
+#endif
+
 #define XS_STATE(type, x) \
   INT2PTR(type, SvROK(x) ? SvIV(SvRV(x)) : SvIV(x))
 
