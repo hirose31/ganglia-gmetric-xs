@@ -1,6 +1,9 @@
 Revision history for Ganglia-Gmetric-XS
 
-1.01  2009-04-21 *not released*
+1.02  2010-10-26
+  * support ganglia 3.1.
+
+1.01  2009-04-21
   * fixed some typo.
     thanks to Carlo Marcelo Arenas Belon.
 
