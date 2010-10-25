@@ -16,8 +16,6 @@ $ganglia_dir ||= $ENV{GANGLIA_DIR} if $ENV{GANGLIA_DIR};
 die "missing option: --ganglia-dir=/path/to/ganglia-3.0.x" unless $ganglia_dir;
 my @static_libs = qw(
                         lib/.libs/libganglia.a
-                        srclib/apr/.libs/libapr-0.a
-                        srclib/confuse/src/.libs/libconfuse.a
                    );
 my @myextlibs;
 for my $lib (@static_libs) {
@@ -30,9 +28,9 @@ for my $lib (@static_libs) {
 
 can_cc or die "This module requires a C compiler";
 cc_optimize_flags "-O2";
-cc_inc_paths "$ganglia_dir/lib", "$ganglia_dir/srclib/apr/include";
+cc_inc_paths "$ganglia_dir/include", "$ganglia_dir/lib";
 #cc_lib_paths "";
-libs "-lrt";
+libs "-lrt -lconfuse -lapr-1";
 my @defines;
 makemaker_args "MYEXTLIB" => join(" ", @myextlibs);
 if ($diagnostic) {
