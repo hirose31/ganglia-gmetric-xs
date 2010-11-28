@@ -59,12 +59,15 @@ _ganglia_initialize(class, config)
     RETVAL
 
 int
-_ganglia_send(self, name, value, type, units, slope, tmax, dmax)
+_ganglia_send(self, name, value, type, units, group, desc, title, slope, tmax, dmax)
     SV   *self;
     char *name;
     char *value;
     char *type;
     char *units;
+    char *group;
+    char *desc;
+    char *title;
     unsigned int slope;
     unsigned int tmax;
     unsigned int dmax;
@@ -91,6 +94,13 @@ _ganglia_send(self, name, value, type, units, slope, tmax, dmax)
     case 4:
       croak("the value parameter \"%s\" does not represent a number. exiting.\n", value);
     }
+
+    if (*group != '\0')
+        Ganglia_metadata_add(gang->gmetric, "GROUP", group);
+    if (*desc  != '\0')
+        Ganglia_metadata_add(gang->gmetric, "DESC", desc);
+    if (*title != '\0')
+        Ganglia_metadata_add(gang->gmetric, "TITLE", title);
 
     RETVAL = ! Ganglia_metric_send(gang->gmetric, gang->channel);
     Ganglia_metric_destroy(gang->gmetric);
