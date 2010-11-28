@@ -16,18 +16,19 @@ INSTALLATION
 To install this module, run the following commands:
 
 To build XS module, We need some libraries and header files which bundled
-ganglia tarball. so firstly we configure and make ganglia source.
+ganglia tarball. so firstly we configure and make ganglia source. Don't
+forget to specify "-fPIC" with CFLAGS.
 
     cd WORKDIR
-    wget http://dl.sourceforge.net/sourceforge/ganglia/ganglia-3.0.X.tar.gz
-    tar zxf ganglia-3.0.X.tar.gz
-    cd ganglia-3.0.X
+    wget http://dl.sourceforge.net/sourceforge/ganglia/ganglia-3.1.X.tar.gz
+    tar zxf ganglia-3.1.X.tar.gz
+    cd ganglia-3.1.X
     ./configure CFLAGS="-fPIC" && make
 
 next, run perl Makefile.PL specifying gaglia build directory by --ganglia-dir
 option or environment variable $GANGLIA_DIR.
 
-    perl Makefile.PL --ganglia-dir=WORKDIR/ganglia-3.0.X
+    perl Makefile.PL --ganglia-dir=WORKDIR/ganglia-3.1.X
     make
     make test
     make install

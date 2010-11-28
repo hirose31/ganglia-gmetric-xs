@@ -26,6 +26,9 @@ sub send {
         $args{value} || "",
         $args{type}  || "",
         $args{units} || "",
+        $args{group} || "",
+        $args{desc}  || "",
+        $args{title} || "",
         3, 60, 0);
 }
 
@@ -78,6 +81,9 @@ do send a metric value. %param is following:
   value  value of the metric
   type   either string|int8|uint8|int16|uint16|int32|uint32|float|double
   units  unit of measure for the value e.g. "Kilobytes", "Celcius"
+  group  group name of metric. (optional)
+  desc   description of metric. (optional)
+  title  title of metric. (optional)
 
 =head1 SEE ALSO
 
