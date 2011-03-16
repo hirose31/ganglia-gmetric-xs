@@ -23,14 +23,16 @@ typedef struct ganglia_t {
   Ganglia_metric            gmetric;
   Ganglia_udp_send_channels channel;
   Ganglia_gmond_config      gconfig;
+  char*                     spoof;
 } ganglia;
 
 MODULE = Ganglia::Gmetric::XS    PACKAGE = Ganglia::Gmetric::XS
 
 SV *
-_ganglia_initialize(class, config)
+_ganglia_initialize(class, config, spoof)
     SV   *class;
     char *config;
+    char *spoof;
   PREINIT:
     ganglia *gang;
     SV *sv;
@@ -54,12 +56,14 @@ _ganglia_initialize(class, config)
     if (! gang->channel)
       croak("failed to Ganglia_udp_send_channels_create");
 
+    gang->spoof = spoof;
+
     RETVAL = sv_setref_iv(newSV(0), SvPV_nolen(class), PTR2IV(gang));
   OUTPUT:
     RETVAL
 
 int
-_ganglia_send(self, name, value, type, units, group, desc, title, slope, tmax, dmax)
+_ganglia_send(self, name, value, type, units, group, desc, title, slope, tmax, dmax, spoof)
     SV   *self;
     char *name;
     char *value;
@@ -71,8 +75,10 @@ _ganglia_send(self, name, value, type, units, group, desc, title, slope, tmax, d
     unsigned int slope;
     unsigned int tmax;
     unsigned int dmax;
+    char *spoof;
   PREINIT:
     ganglia *gang;
+    char *spf;
   CODE:
     int   r;
     gang = XS_STATE(ganglia *, self);
@@ -102,6 +108,52 @@ _ganglia_send(self, name, value, type, units, group, desc, title, slope, tmax, d
     if (*title != '\0')
         Ganglia_metadata_add(gang->gmetric, "TITLE", title);
 
+    if (gang->spoof)
+        spf = gang->spoof;
+    if (spoof && *spoof != '\0')
+        spf = spoof;
+    if (spf)
+        Ganglia_metadata_add(gang->gmetric, SPOOF_HOST, spf);
+
+    RETVAL = ! Ganglia_metric_send(gang->gmetric, gang->channel);
+    Ganglia_metric_destroy(gang->gmetric);
+  OUTPUT:
+    RETVAL
+
+int
+_ganglia_heartbeat(self, spoof)
+    SV   *self;
+    char *spoof;
+  PREINIT:
+    ganglia *gang;
+  CODE:
+    int   r;
+    char *spf;
+    gang = XS_STATE(ganglia *, self);
+
+    gang->gmetric = Ganglia_metric_create(gang->context);
+    if (! gang->gmetric)
+      croak("failed to Ganglia_metric_create");
+#ifdef DIAG
+    PerlIO_printf(PerlIO_stderr(), "heartbeat\n");
+#endif
+    r = Ganglia_metric_set(gang->gmetric, "heartbeat", "0", "uint32", "", 0, 0, 0);
+    switch(r) {
+    case 1:
+      croak("gmetric parameters invalid. exiting.\n");
+    case 2:
+      croak("one of your parameters has an invalid character '\"'. exiting.\n");
+    }
+    if (gang->spoof)
+        spf = gang->spoof;
+    if (spoof && *spoof != '\0')
+        spf = spoof;
+    if (spf)
+      Ganglia_metadata_add(gang->gmetric, SPOOF_HOST, spf);
+    Ganglia_metadata_add(gang->gmetric, SPOOF_HEARTBEAT, "yes");
+#ifdef DIAG
+    PerlIO_printf(PerlIO_stderr(), "spoof: %s\n", spoof);
+#endif
     RETVAL = ! Ganglia_metric_send(gang->gmetric, gang->channel);
     Ganglia_metric_destroy(gang->gmetric);
   OUTPUT:
