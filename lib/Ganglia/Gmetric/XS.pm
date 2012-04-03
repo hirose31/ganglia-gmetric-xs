@@ -24,7 +24,7 @@ sub send {
     return _ganglia_send(
         $self,
         $args{name}  || "",
-        $args{value} || "",
+        exists $args{value} ? $args{value} : "",
         $args{type}  || "",
         $args{units} || "",
         $args{group} || "",
