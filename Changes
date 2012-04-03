@@ -1,5 +1,9 @@
 Revision history for Ganglia-Gmetric-XS
 
+1.04  2012-04-03
+  * Fixed semantic bug
+    (rt75468 https://rt.cpan.org/Public/Bug/Display.html?id=75468)
+
 1.03  2010-11-29
   * added feature to send metadata (group, desc, title).
     (rt63368 https://rt.cpan.org/Public/Bug/Display.html?id=63368)
