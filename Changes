@@ -1,5 +1,8 @@
 Revision history for Ganglia-Gmetric-XS
 
+1.05  2016-08-17
+  * Enable to compile with ganglia >= 3.2
+
 1.04  2012-04-03
   * Fixed semantic bug
     (rt75468 https://rt.cpan.org/Public/Bug/Display.html?id=75468)
