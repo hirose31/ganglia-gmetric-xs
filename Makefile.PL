@@ -39,7 +39,7 @@ if ($ganglia_version == 3.0) {
                     );
     @inc_paths = ("$ganglia_dir/lib", "$ganglia_dir/srclib/apr/include");
     $libs = "-lrt";
-} elsif ($ganglia_version == 3.1) {
+} elsif ($ganglia_version >= 3.1) {
     push @defines, '-DGANGLIA31';
     @static_libs = qw(
                          lib/.libs/libganglia.a
