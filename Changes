@@ -1,5 +1,9 @@
 Revision history for Ganglia-Gmetric-XS
 
+1.06  2016-09-01
+  * Exclude MYMETA files
+    (rt117395 https://rt.cpan.org/Public/Bug/Display.html?id=117395)
+
 1.05  2016-08-17
   * Enable to compile with ganglia >= 3.2
 
