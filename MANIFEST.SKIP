@@ -28,3 +28,4 @@
 \.shipit$
 \.gitignore$
 TODO.todo
+^MYMETA\.
